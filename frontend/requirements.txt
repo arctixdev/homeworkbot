@@ -1,0 +1,7 @@
+hikari[speedups]==v2.0.0.dev120
+uvloop==0.17.0
+hikari-tanjun==2.17.0
+python-dotenv==1.0.0
+gql[requests]==3.4.0
+urllib3==1.26.15
+requests-toolbelt==0.10.1
