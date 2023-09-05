@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Homework extends Model
+class HomeworkProgress extends Model
 {
     /**
      * The attributes that are mass assignable.

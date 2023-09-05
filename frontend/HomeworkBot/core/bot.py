@@ -11,15 +11,13 @@ logger = logging.getLogger(__name__)
 class HomeworkBot:
     bot: hikari.GatewayBot
     client: tanjun.Client
-    apiInterface: apiInterface
+    api: apiInterface
 
     def __init__(self, TOKEN: str):
         print("Starting Bot, GraphQL interface and logger")
-        HomeworkBot.apiInterface = apiInterface()
+        HomeworkBot.api = apiInterface()
         HomeworkBot.bot = hikari.GatewayBot(TOKEN)
         logger.info("Created `bot`")
-
-        HomeworkBot.apiInterface.get_users()
 
         HomeworkBot.client = tanjun.Client.from_gateway_bot(HomeworkBot.bot, declare_global_commands=True, mention_prefix=True)
         logger.info("Created `client`, loading modules")

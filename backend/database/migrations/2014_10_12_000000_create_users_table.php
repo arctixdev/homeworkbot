@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nickname');
             $table->string('username');
+            $table->string('discord_id');
             $table->rememberToken();
             $table->timestamps();
         });
