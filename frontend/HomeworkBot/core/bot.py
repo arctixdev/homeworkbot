@@ -3,24 +3,34 @@ import tanjun
 import logging
 from pathlib import Path
 
-import HomeworkBot.modules
 from HomeworkBot.core.api import apiInterface
+
+import tanjun
+from hikari import Embed
+from hikari import Color
 
 logger = logging.getLogger(__name__)
 
-class HomeworkBot:
+async def error_hook(ctx: tanjun.abc.Context, error: Exception):
+    await ctx.respond(embed=Embed(title="Oh no!", color=Color(0xFF051A), description=error))
+
+class BotCore:
     bot: hikari.GatewayBot
     client: tanjun.Client
-    api: apiInterface
+    api: apiInterface = apiInterface()
 
     def __init__(self, TOKEN: str):
         print("Starting Bot, GraphQL interface and logger")
-        HomeworkBot.api = apiInterface()
-        HomeworkBot.bot = hikari.GatewayBot(TOKEN)
+        BotCore.bot = hikari.GatewayBot(TOKEN)
         logger.info("Created `bot`")
 
-        HomeworkBot.client = tanjun.Client.from_gateway_bot(HomeworkBot.bot, declare_global_commands=True, mention_prefix=True)
+        BotCore.client = tanjun.Client.from_gateway_bot(
+            BotCore.bot, declare_global_commands=True, mention_prefix=True
+        )
         logger.info("Created `client`, loading modules")
-        HomeworkBot.client.load_modules(*Path("./HomeworkBot/modules").glob("*.py"))
-        logger.info("Loaded commands, starting bot")
-        HomeworkBot.bot.run()
+        BotCore.client.load_modules(*Path("./HomeworkBot/modules").glob("*.py"))
+        hook = tanjun.AnyHooks().set_on_error(error_hook)
+        BotCore.client.set_hooks(hook)
+
+        logger.info("Loaded commands, starting bot")        
+        BotCore.bot.run()

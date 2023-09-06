@@ -47,13 +47,7 @@ type HomeworkProgress {
 "Indicates what fields are available at the top level of a query operation."
 type Query {
     "Find a single user by an identifying attribute."
-    user(
-      "Search by primary key."
-      id: ID @eq @rules(apply: ["prohibits:username", "required_without:username"])
-
-      "Search by username."
-      username: String @eq @rules(apply: ["prohibits:id", "required_without:id", "username"])
-    ): User @find
+    user(discord_id: String! @eq): User @find
 
     "List multiple users."
     users(
@@ -64,6 +58,7 @@ type Query {
 
 type Mutation {
   createUser(input: CreateUserInput! @spread): User @create
+  deleteUser(discord_id: String! @eq): User @delete
 }
 
 "Account of a person who uses the homework bot."
