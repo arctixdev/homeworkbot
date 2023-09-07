@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-class User extends Authenticatable
+use Illuminate\Database\Eloquent\Model;
+use App\Models\HomeworkProgress;
+
+class User extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -15,7 +17,7 @@ class User extends Authenticatable
     ];
 
     public function homeworks(){
-        return $this->hasMany('HomeworkProgress');
+        return $this->hasMany(HomeworkProgress::class);
     }
 
     /**

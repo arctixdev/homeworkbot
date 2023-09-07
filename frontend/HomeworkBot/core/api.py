@@ -64,20 +64,18 @@ class ApiUser:
         self.discord_id = response["discord_id"]
         self.updated_at = response["updated_at"]
         return self
-
-
-def parse_user(
-    raw_user: dict[str, any], connection: SyncClientSession | None = None
-) -> ApiUser:
-    return ApiUser(
-        username=raw_user["username"],
-        nickname=raw_user["nickname"],
-        discord_id=raw_user["discord_id"],
-        db_id=raw_user["id"],
-        created_at=raw_user["created_at"],
-        updated_at=raw_user["updated_at"],
-        connection=connection,
-    )
+    
+    @staticmethod
+    def from_dict(raw_user: dict[str, any], connection: SyncClientSession | None = None):
+        return ApiUser(
+            username=raw_user["username"],
+            nickname=raw_user["nickname"],
+            discord_id=raw_user["discord_id"],
+            db_id=raw_user["id"],
+            created_at=raw_user["created_at"],
+            updated_at=raw_user["updated_at"],
+            connection=connection,
+        )
 
 
 class apiInterface:
@@ -155,7 +153,7 @@ class apiInterface:
             variable_values={"discord_id": str(discord_id)},
         )
         if "user" in response:
-            return parse_user(raw_user=response["user"], connection=self.connection)
+            return ApiUser.from_dict(raw_user=response["user"], connection=self.connection)
         else:
             return False
 
@@ -179,6 +177,61 @@ class apiInterface:
         )
         print(response)
         if "deleteUser" in response:
-            return parse_user(raw_user=response["deleteUser"])
+            return ApiUser.from_dict(raw_user=response["deleteUser"])
+        else:
+            return False
+
+    def get_user_homework(self, discord_id: int) -> list[dict[str, any]] | bool:
+        response = self.connection.execute(
+            gql(
+                """
+        query GetUserHomework($discord_id: String!) {
+        user (discord_id: $discord_id) {
+            homeworks {
+            created_at
+            homework {
+                created_at
+                id
+                link
+                name
+                subject
+                updated_at
+            }
+            id
+            notes
+            }
+        }
+        }
+        """
+            ),
+            variable_values={"discord_id": str(discord_id)},
+        )
+        if "user" in response:
+            return response["user"]["homeworks"]
+        else:
+            return False
+        
+    def create_homework(self, subject: str, name: str, link: str | None, description: str, date_due: str) -> dict[str, any] | bool:
+        response = self.connection.execute(
+            gql(
+                """
+        mutation CreateHomework($subject: String!, $name: String!, $link: String!, $description: String!, $date_due: Date!) {
+        createHomework(subject: $subject, name: $name, link: $link, description: $description, date_due: $date_due) {
+            created_at
+            id
+            link
+            name
+            description
+            date_due
+            subject
+            updated_at
+        }
+        }
+        """
+            ),
+            variable_values={"subject": subject, "name": name, "link": link, "description": description, "date_due": date_due},
+        )
+        if "createHomework" in response:
+            return response["createHomework"]
         else:
             return False

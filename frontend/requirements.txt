@@ -5,3 +5,4 @@ python-dotenv==1.0.0
 gql[requests]==3.4.0
 urllib3==1.26.15
 requests-toolbelt==0.10.1
+hikari-miru==3.2.0

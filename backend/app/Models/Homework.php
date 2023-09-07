@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Homework extends Model
@@ -13,15 +12,11 @@ class Homework extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'link', 'subject'
+        'name', 'link', 'subject', 'description'
     ];
 
     public function user(){
-        return $this->hasOne('user');
-    }
-
-    public function homework(){
-        return $this->hasOne('homework');
+        return $this->hasOne(User::class);
     }
 
     /**

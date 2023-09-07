@@ -8,6 +8,7 @@ from HomeworkBot.core.api import apiInterface
 import tanjun
 from hikari import Embed
 from hikari import Color
+import miru
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,8 @@ class BotCore:
         BotCore.client = tanjun.Client.from_gateway_bot(
             BotCore.bot, declare_global_commands=True, mention_prefix=True
         )
+        miru.install(BotCore.bot)
+
         logger.info("Created `client`, loading modules")
         BotCore.client.load_modules(*Path("./HomeworkBot/modules").glob("*.py"))
         hook = tanjun.AnyHooks().set_on_error(error_hook)

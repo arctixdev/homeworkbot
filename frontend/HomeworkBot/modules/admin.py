@@ -10,7 +10,7 @@ from HomeworkBot.core.bot import BotCore
 from HomeworkBot.core.api import ApiUser
 
 component = tanjun.Component(name="reload")
-admin = tanjun.slash_command_group("admin", "admin commands", default_member_permissions=hikari.Permissions.ADMINISTRATOR, default_to_ephemeral=False)
+admin = tanjun.slash_command_group("admin", "admin commands", default_member_permissions=hikari.Permissions.ADMINISTRATOR, default_to_ephemeral=True)
 logger = logging.getLogger(__name__)
 
 def get_modules():

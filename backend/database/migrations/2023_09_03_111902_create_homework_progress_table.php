@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('homework_progresses', function (Blueprint $table) {
+        Schema::create('homework_progress', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->unsigned();
             $table->integer('homework_id')->unsigned();
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('notes');
             $table->string('link');
             $table->timestamps();
-            $table->foreign('homework_id')->references('id')->on('homeworks')->onCascade('delete');
+            $table->foreign('homework_id')->references('id')->on('homework')->onCascade('delete');
             $table->foreign('user_id')->references('id')->on('users')->onCascade('delete');
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('homework_progresses');
+        Schema::dropIfExists('homework_progress');
     }
 };

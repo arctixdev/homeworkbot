@@ -1,6 +1,9 @@
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
 "Homework."
 type Homework {
     "Unique primary key."
@@ -14,6 +17,12 @@ type Homework {
 
     "Subject of homework."
     subject: String!
+
+    "Description of Homework."
+    description: String!
+
+    "Date when homework is due"
+    date_due: Date!
 
     "When the homework was created."
     created_at: DateTime!
@@ -59,6 +68,7 @@ type Query {
 type Mutation {
   createUser(input: CreateUserInput! @spread): User @create
   deleteUser(discord_id: String! @eq): User @delete
+  createHomework(name: String!, subject: String!, link: String!, description: String!, date_due: Date!): Homework @create
 }
 
 "Account of a person who uses the homework bot."

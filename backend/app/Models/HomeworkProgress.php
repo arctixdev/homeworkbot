@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class HomeworkProgress extends Model
 {
+    protected $table = 'homework_progress';
     /**
      * The attributes that are mass assignable.
      *
@@ -17,11 +17,11 @@ class HomeworkProgress extends Model
     ];
 
     public function user(){
-        return $this->hasOne('user');
+        return $this->belongsTo(User::class);
     }
 
     public function homework(){
-        return $this->hasOne('homework');
+        return $this->belongsTo(Homework::class);
     }
 
     /**
