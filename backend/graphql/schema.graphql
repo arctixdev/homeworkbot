@@ -13,7 +13,7 @@ type Homework {
     name: String!
 
     "Link of homework"
-    link: String!
+    link: String
 
     "Subject of homework."
     subject: String!
@@ -40,7 +40,10 @@ type HomeworkProgress {
     homework: Homework!
 
     "User of homework."
-    owner: User!
+    user: User!
+
+    "Progress of the homework."
+    progress: Int!
 
     "notes of homework."
     notes: String!
@@ -68,7 +71,8 @@ type Query {
 type Mutation {
   createUser(input: CreateUserInput! @spread): User @create
   deleteUser(discord_id: String! @eq): User @delete
-  createHomework(name: String!, subject: String!, link: String!, description: String!, date_due: Date!): Homework @create
+  createHomework(name: String!, subject: String!, link: String, description: String!, date_due: Date!): Homework!
+  setHomeworkProgress(progress: Int!, homework_id: ID!): HomeworkProgress!
 }
 
 "Account of a person who uses the homework bot."

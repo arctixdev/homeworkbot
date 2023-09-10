@@ -3,7 +3,7 @@ import hikari
 
 from HomeworkBot.core.bot import BotCore
 
-class HomeworkModal(miru.Modal):
+class HomeworkAddModal(miru.Modal):
     subject = miru.TextInput(label="Subject", placeholder="ex: Dansk", min_length=3, max_length=20, required=True)
     name = miru.TextInput(label="Name", placeholder="ex: Analyser en eller anden dødsyg tekst", required=True)
     link = miru.TextInput(label="Link", placeholder="ex: https://skoleportal.easyiqcloud.dk/bla", required=False)

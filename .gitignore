@@ -165,6 +165,8 @@ frontend/.venv
 
 /frontend/.venv/*
 
+/backend/storage/framework/cache/*
+
 # Spyder project settings
 .spyderproject
 .spyproject

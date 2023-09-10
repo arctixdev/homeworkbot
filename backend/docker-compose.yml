@@ -48,6 +48,18 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
+    discord_bot:
+        image: homeworkbot_discord:latest
+        networks:
+            - sail
+        volumes:
+            - '.env:/var/.env'
+        depends_on:
+            laravel.test:
+                condition: service_started
+        environment:
+            API_URL: '$API_URL'
+            DISCORD_TOKEN: '$DISCORD_TOKEN'
 networks:
     sail:
         driver: bridge

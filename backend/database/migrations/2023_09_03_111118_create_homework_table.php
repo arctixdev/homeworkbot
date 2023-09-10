@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('homework', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('link');
+            $table->string('link')->nullable();
             $table->string('subject');
             $table->string('description');
-            $table->dateTime('date_due');
+            $table->date('date_due');
             $table->timestamps();
         });
     }

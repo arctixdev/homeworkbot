@@ -2,6 +2,7 @@ from gql import gql, Client
 from gql.transport.requests import RequestsHTTPTransport
 from gql.client import SyncClientSession
 
+from os import getenv
 
 class ApiUser:
     nickname: str
@@ -86,7 +87,8 @@ class apiInterface:
     def __init__(self):
         """Initilize the graphql connection"""
         # Select your transport with a defined url endpoint
-        self.transport = RequestsHTTPTransport(url="http://localhost:8060/graphql")
+        print(getenv("API_URL"))
+        self.transport = RequestsHTTPTransport(getenv("API_URL"))
 
         # Create a GraphQL client using the defined transport
         self.client = Client(
@@ -198,6 +200,7 @@ class apiInterface:
                 updated_at
             }
             id
+            progress
             notes
             }
         }
@@ -215,7 +218,7 @@ class apiInterface:
         response = self.connection.execute(
             gql(
                 """
-        mutation CreateHomework($subject: String!, $name: String!, $link: String!, $description: String!, $date_due: Date!) {
+        mutation CreateHomework($subject: String!, $name: String!, $link: String, $description: String!, $date_due: Date!) {
         createHomework(subject: $subject, name: $name, link: $link, description: $description, date_due: $date_due) {
             created_at
             id
@@ -233,5 +236,23 @@ class apiInterface:
         )
         if "createHomework" in response:
             return response["createHomework"]
+        else:
+            return False
+        
+    def finish_homework(self, homework_id: int) -> dict[str, any] | bool:
+        response = self.connection.execute(
+            gql(
+                """
+        mutation MyMutation($id: ID!) {
+        setHomeworkProgress(homework_id: $id, progress: 1) {
+            id
+        }
+        }
+        """
+            ),
+            variable_values={"id": homework_id},
+        )
+        if "setHomeworkProgress" in response:
+            return response["setHomeworkProgress"]
         else:
             return False

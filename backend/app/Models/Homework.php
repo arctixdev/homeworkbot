@@ -12,7 +12,7 @@ class Homework extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'link', 'subject', 'description'
+        'name', 'link', 'subject', 'description', 'date_due'
     ];
 
     public function user(){
